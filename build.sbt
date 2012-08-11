@@ -11,3 +11,6 @@ scalaVersion := "2.10.0-M6"
 libraryDependencies <++= scalaVersion(sv => Seq(
     "org.scalaz" % ("scalaz_" + sv) % "7.0.0-M2",
     "org.scalaz" % ("scalaz-typelevel_" + sv) % "7.0.0-M2"))
+
+licenses := Seq("Apache License, Version 2.0"
+		-> url("http://www.apache.org/licenses/LICENSE-2.0"))
