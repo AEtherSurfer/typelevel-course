@@ -14,7 +14,8 @@ object Languages {
 
   object Environment {
     implicit object environmentInstance extends Traverse[Environment] {
-      def traverseImpl[G[_]: Applicative,A,B](fa: Environment[A])(f: A => G[B]): G[Environment[B]] = fa match {
+      def traverseImpl[G[_]: Applicative,A,B
+		     ](fa: Environment[A])(f: A => G[B]): G[Environment[B]] = fa match {
 	case Bind(n, v, b) => f(b) map (Bind(n, v, _))
 	case Ref(n) => (Ref(n): Environment[B]).point[G]
       }
@@ -30,7 +31,8 @@ object Languages {
 
   object Arithmetic {
     implicit object arithmeticInstance extends Traverse[Arithmetic] {
-      def traverseImpl[G[_]: Applicative,A,B](fa: Arithmetic[A])(f: A => G[B]): G[Arithmetic[B]] = fa match {
+      def traverseImpl[G[_]: Applicative,A,B
+		     ](fa: Arithmetic[A])(f: A => G[B]): G[Arithmetic[B]] = fa match {
 	case Add(l, r) => (f(l) <**> f(r))(Add.apply)
 	case Sub(l, r) => (f(l) <**> f(r))(Sub.apply)
 	case Mul(l, r) => (f(l) <**> f(r))(Mul.apply)
@@ -43,4 +45,12 @@ object Languages {
   sealed trait Literal[+E]
   case class Lit(v: FCValue) extends Literal[Nothing]
   case class Bottom(err: String) extends Literal[Nothing]
+
+  object Literal {
+    implicit object environmentInstance extends Traverse[Literal] {
+      def traverseImpl[G[_]: Applicative,A,B
+		     ](fa: Literal[A])(f: A => G[B]): G[Literal[B]] =
+	fa.asInstanceOf[Literal[B]].point[G]
+    }
+  }
 }
