@@ -6,6 +6,12 @@ organization := "com.nocandysw"
 
 scalaVersion := "2.10.0-M6"
 
+scalacOptions ++= Seq("-deprecation", "-unchecked")
+
+scalacOptions <++= scalaVersion map (sv =>
+  if (sv startsWith "2.9") Seq.empty[String]
+  else Seq("-language", "-language:higherKinds"))
+
 // XXX %% extends with "_2.10" as of writing; when that's right, go
 // back to that
 libraryDependencies <++= scalaVersion(sv => Seq(
