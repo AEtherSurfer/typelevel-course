@@ -27,6 +27,18 @@ case class FixF[F[_]](extract: F[FixF[F]]) extends AnyVal {
 }
 
 object FixF {
+  /** Lift an `fv` into a FixF.  Usually more convenient than `apply`.
+    *
+    * scala> import scalaz.std.option._
+    * scala> Some(Some(Some(None))): FixF[Option]
+    * res1: com.nocandysw.interpmixed.FixF[Option] =
+    *   FixF(Some(FixF(Some(FixF(Some(FixF(None)))))))
+    *
+    * @param fv Functor to be recursively wrapped up.
+    * @param ilift The lift recursion, usually myself with different
+    *        params.
+    * @param F Obviously, works only on functors.
+    */
   implicit def lift[F[_], IF](fv: F[IF])(implicit ilift: IF => FixF[F],
 					 F: Functor[F]): FixF[F] =
     FixF(fv map ilift)
