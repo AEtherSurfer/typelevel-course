@@ -19,7 +19,7 @@ import scalaz.{~>, Foldable, Functor, Monoid}
 import scalaz.syntax.foldable._
 import scalaz.syntax.functor._
 
-case class FixF[F[_]](extract: F[FixF[F]]) extends AnyVal {
+case class FixF[F[_]](extract: F[FixF[F]]) {
   /** Lift the natural transformation `FNat`. */
   def trans[B[_]](implicit FNat: F ~> B, FF: Functor[F]): FixF[B] =
     FixF(FNat(extract map (_.trans)))
