@@ -10,7 +10,9 @@ scalacOptions ++= Seq("-deprecation", "-unchecked")
 
 scalacOptions <++= scalaVersion map (sv =>
   if (sv startsWith "2.9") Seq.empty[String]
-  else Seq("-language", "-language:higherKinds"))
+  else Seq("-feature", "-language",
+	   "-language:higherKinds",
+	   "-language:implicitConversions"))
 
 // XXX %% extends with "_2.10" as of writing; when that's right, go
 // back to that

@@ -16,11 +16,18 @@
 package com.nocandysw.interpmixed
 
 import scalaz.{~>, Functor}
+import scalaz.syntax.functor._
 
-case class FixF[F[_]](fv: F[FixF[F]]) extends AnyVal {
+case class FixF[F[_]](extract: F[FixF[F]]) extends AnyVal {
   def trans[B[_]](implicit FNat: F ~> B, FF: Functor[F]): FixF[B] = {
     def recur(x: FixF[F]): FixF[B] =
-      FixF(FNat(FF.map(fv)(recur)))
+      FixF(FNat(extract map recur))
     recur(this)
   }
+}
+
+object FixF {
+  implicit def lift[F[_], IF](fv: F[IF])(implicit ilift: IF => FixF[F],
+					 F: Functor[F]): FixF[F] =
+    FixF(fv map ilift)
 }
