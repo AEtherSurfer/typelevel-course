@@ -45,8 +45,10 @@ object FixF {
 
   /** @todo In scalaz 7.0.0-M3, replace with Functor coproduct */
   private[FixF] implicit
-  def fCoproduct[F[_]: Functor, G[_]: Functor]: Functor[({type E[A] = Either[F[A], G[A]]})#E] = new Functor[({type E[A] = Either[F[A], G[A]]})#E] {
-    def map[A, B](fa: Either[F[A], G[A]])(f: A => B): Either[F[B], G[B]] =
-      fa fold (a => Left(a map f), b => Right(b map f))
-  }
+  def fCoproduct[F[_]: Functor, G[_]: Functor
+	       ]: Functor[({type E[A] = Either[F[A], G[A]]})#E] =
+    new Functor[({type E[A] = Either[F[A], G[A]]})#E] {
+      def map[A, B](fa: Either[F[A], G[A]])(f: A => B): Either[F[B], G[B]] =
+	fa fold (a => Left(a map f), b => Right(b map f))
+    }
 }
