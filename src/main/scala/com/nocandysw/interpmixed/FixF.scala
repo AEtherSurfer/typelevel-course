@@ -15,13 +15,22 @@
 
 package com.nocandysw.interpmixed
 
-import scalaz.{~>, Functor}
+import scalaz.{~>, Foldable, Functor, Monoid}
+import scalaz.syntax.foldable._
 import scalaz.syntax.functor._
 
 case class FixF[F[_]](extract: F[FixF[F]]) extends AnyVal {
+  /** Lift the natural transformation `FNat`. */
   def trans[B[_]](implicit FNat: F ~> B, FF: Functor[F]): FixF[B] = {
     def recur(x: FixF[F]): FixF[B] =
       FixF(FNat(extract map recur))
+    recur(this)
+  }
+
+  /** Fold the fix tree into a Monoid. */
+  def foldMap[Z](f: F[Z] => Z)(implicit FF: Foldable[F],
+			      MZ: Monoid[Z]): Z = {
+    def recur(x: FixF[F]): Z = extract foldMap recur
     recur(this)
   }
 }
