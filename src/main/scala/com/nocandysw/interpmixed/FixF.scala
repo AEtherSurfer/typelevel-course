@@ -21,18 +21,13 @@ import scalaz.syntax.functor._
 
 case class FixF[F[_]](extract: F[FixF[F]]) extends AnyVal {
   /** Lift the natural transformation `FNat`. */
-  def trans[B[_]](implicit FNat: F ~> B, FF: Functor[F]): FixF[B] = {
-    def recur(x: FixF[F]): FixF[B] =
-      FixF(FNat(extract map recur))
-    recur(this)
-  }
+  def trans[B[_]](implicit FNat: F ~> B, FF: Functor[F]): FixF[B] =
+    FixF(FNat(extract map (_.trans)))
 
   /** Fold the fix tree into a Monoid. */
   def foldMap[Z](f: F[Z] => Z)(implicit FF: Foldable[F],
-			      MZ: Monoid[Z]): Z = {
-    def recur(x: FixF[F]): Z = extract foldMap recur
-    recur(this)
-  }
+			      MZ: Monoid[Z]): Z =
+    extract foldMap (_ foldMap f)
 }
 
 object FixF {
