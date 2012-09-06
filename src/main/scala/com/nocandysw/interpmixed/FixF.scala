@@ -18,14 +18,14 @@ package com.nocandysw.interpmixed
 import scalaz.{~>, Functor}
 import scalaz.syntax.functor._
 
-case class FixF[F[_]](extract: F[FixF[F]]) {
+case class FixF[F[_]](out: F[FixF[F]]) {
   /** Lift the natural transformation `FNat`. */
   def trans[B[_]](implicit FNat: F ~> B, FF: Functor[F]): FixF[B] =
-    FixF(FNat(extract map (_.trans)))
+    FixF(FNat(out map (_.trans)))
 
   /** Fold the fix tree, bottom-up. */
   def foldr[Z](f: F[Z] => Z)(implicit FF: Functor[F]): Z =
-    f(extract map (_ foldr f))
+    f(out map (_ foldr f))
 }
 
 object FixF {
