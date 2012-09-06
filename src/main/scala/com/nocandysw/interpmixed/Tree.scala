@@ -48,10 +48,10 @@ object Languages {
     implicit object arithmeticInstance extends Traverse[Arithmetic] {
       def traverseImpl[G[_]: Applicative,A,B
 		     ](fa: Arithmetic[A])(f: A => G[B]): G[Arithmetic[B]] = fa match {
-	case Add(l, r) => (f(l) <**> f(r))(Add.apply)
-	case Sub(l, r) => (f(l) <**> f(r))(Sub.apply)
-	case Mul(l, r) => (f(l) <**> f(r))(Mul.apply)
-	case Div(l, r) => (f(l) <**> f(r))(Div.apply)
+	case Add(l, r) => ^(f(l), f(r))(Add.apply)
+	case Sub(l, r) => ^(f(l), f(r))(Sub.apply)
+	case Mul(l, r) => ^(f(l), f(r))(Mul.apply)
+	case Div(l, r) => ^(f(l), f(r))(Div.apply)
       }
     }
   }
