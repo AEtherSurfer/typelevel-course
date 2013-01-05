@@ -13,7 +13,8 @@ scalacOptions <++= scalaVersion map (sv =>
   else Seq("-feature", "-language"))
 
 libraryDependencies ++= Seq(
-    "org.scalaz" %% "scalaz-core" % "7.0.0-M7")
+    "org.scalaz" %% "scalaz-core" % "7.0.0-M7",
+    "org.scalacheck" %% "scalacheck" % "1.10.0" % "test")
 
 resolvers += ("Sonatype Nexus Releases"
   at "https://oss.sonatype.org/content/repositories/releases")
