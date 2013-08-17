@@ -8,7 +8,7 @@ description := "TODO-describe"
 
 homepage := Some(url("http://www.example.com")) // TODO
 
-scalaVersion := "2.10.1"
+scalaVersion := "2.10.2"
 
 scalacOptions ++= Seq("-deprecation", "-unchecked")
 
@@ -17,9 +17,9 @@ scalacOptions <++= scalaVersion map (sv =>
   else Seq("-feature", "-language"))
 
 libraryDependencies ++= Seq(
-    "org.scalaz" %% "scalaz-core" % "7.0.0",
-    "org.scalaz" %% "scalaz-scalacheck-binding" % "7.0.0" % "test",
-    "org.scalacheck" %% "scalacheck" % "1.10.0" % "test")
+    "org.scalaz" %% "scalaz-core" % "7.0.3",
+    "org.scalaz" %% "scalaz-scalacheck-binding" % "7.0.3" % "test",
+    "org.scalacheck" %% "scalacheck" % "1.10.1" % "test")
 
 resolvers += ("Sonatype Nexus Releases"
   at "https://oss.sonatype.org/content/repositories/releases")
