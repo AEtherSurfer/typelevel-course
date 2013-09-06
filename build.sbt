@@ -10,11 +10,18 @@ homepage := Some(url("http://www.example.com")) // TODO
 
 scalaVersion := "2.10.2"
 
-scalacOptions ++= Seq("-deprecation", "-unchecked")
+scalacOptions ++= Seq(
+  "-encoding", "UTF-8", "-deprecation", "-unchecked")
+// TODO consider -Xlint
+// *or* -Ywarn-nullary-override -Ywarn-inaccessible -Ywarn-adapted-args
 
-scalacOptions <++= scalaVersion map (sv =>
-  if (sv startsWith "2.9") Seq.empty[String]
-  else Seq("-feature", "-language"))
+scalacOptions ++= {
+  if (scalaVersion.value startsWith "2.9") Seq.empty[String]
+  else Seq("-feature", "-language")
+}
+
+javacOptions in (Compile, compile) ++=
+  Seq("-encoding", "UTF-8", "-Xlint")
 
 libraryDependencies ++= Seq(
     "org.scalaz" %% "scalaz-core" % "7.0.3",
@@ -29,9 +36,9 @@ licenses := Seq("Apache License, Version 2.0"
 
 publishMavenStyle := true
 
-publishTo <<= version { (v: String) =>
+publishTo := {
   val ossrh = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT"))
+  if (version.value.trim.endsWith("SNAPSHOT"))
     Some("snapshots" at ossrh + "content/repositories/snapshots")
   else
     Some("releases"  at ossrh + "service/local/staging/deploy/maven2")
