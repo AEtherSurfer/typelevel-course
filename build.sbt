@@ -8,7 +8,7 @@ description := "TODO-describe"
 
 homepage := Some(url("http://www.example.com")) // TODO
 
-scalaVersion := "2.10.2"
+scalaVersion := "2.10.3"
 
 scalacOptions ++= Seq(
   "-encoding", "UTF-8", "-deprecation", "-unchecked")
