@@ -25,17 +25,18 @@ scalacOptions ++= {
 }
 
 // Major, minor, and milestone.
-def scalaVersionInfo(v: String): (Int, Int, Option[Int]) =
-  ("""^(\d+)\.(\d+)\.(?:0-M(\d+))?""".r findFirstMatchIn v
-     map {case util.matching.Regex.Groups(maj, min, mil) =>
-       (maj.toInt, min.toInt, Option(mil) map (_.toInt))}
-     getOrElse (0, 0, None))
+def scalaVersionInfo(v: String): (Int, Int, Int, Option[Int]) =
+  ("""^(\d+)\.(\d+)\.(\d+)(?:-M(\d+))?""".r findFirstMatchIn v
+     map {case util.matching.Regex.Groups(maj, min, pat, mil) =>
+       (maj.toInt, min.toInt, pat.toInt,
+        Option(mil) map (_.toInt))}
+     getOrElse (0, 0, 0, None))
 
 scalacOptions ++= {
   import scala.math.Ordering.Implicits.infixOrderingOps
   val strictInf = scalaVersionInfo(scalaVersion.value) match {
-    case (2, 11, Some(mil)) => mil > 5
-    case (maj, min, _) => (maj -> min) > (2 -> 10)
+    case (2, 11, 0, Some(mil)) => mil > 5
+    case (maj, min, _, _) => (maj -> min) > (2 -> 10)
   }
   if (strictInf) Seq("-Xstrict-inference")
   else Seq.empty[String]
