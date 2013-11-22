@@ -47,14 +47,7 @@ javacOptions in (Compile, compile) ++=
 
 scalazVersion := "7.0.4"
 
-scalacheckVersion := {
-  import scala.math.Ordering.Implicits.infixOrderingOps
-  scalaVersionInfo(scalaVersion.value) match {
-    case (maj, min, pat, _) if (maj, min, pat) < (2, 9, 3) => "1.10.1"
-    case (2, 11, 0, Some(mil)) if mil < 7 => "1.10.1"
-    case _ => "1.11.1"
-  }
-}
+scalacheckVersion := "1.10.1"
 
 libraryDependencies ++= Seq(
     "org.scalaz" %% "scalaz-core" % scalazVersion.value,
