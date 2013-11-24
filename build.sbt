@@ -12,8 +12,6 @@ scalaVersion := "2.10.3"
 
 val scalazVersion = settingKey[String]("Version of scalaz to use.")
 
-val scalacheckVersion = settingKey[String]("Version of scalacheck to use.")
-
 scalacOptions ++= Seq(
   "-encoding", "UTF-8", "-deprecation", "-unchecked")
 // TODO consider -Xlint
@@ -45,14 +43,12 @@ scalacOptions ++= {
 javacOptions in (Compile, compile) ++=
   Seq("-encoding", "UTF-8", "-Xlint")
 
-scalazVersion := "7.0.4"
-
-scalacheckVersion := "1.10.1"
+scalazVersion := "7.0.5"
 
 libraryDependencies ++= Seq(
     "org.scalaz" %% "scalaz-core" % scalazVersion.value,
-    "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion.value % "test",
-    "org.scalacheck" %% "scalacheck" % scalacheckVersion.value % "test")
+    "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion.value % "test"
+)
 
 resolvers += ("Sonatype Nexus Releases"
   at "https://oss.sonatype.org/content/repositories/releases")
