@@ -28,35 +28,26 @@ scalaVersion := "2.10.3"
 val scalazVersion = settingKey[String]("Version of scalaz to use.")
 
 scalacOptions ++= Seq(
-  "-encoding", "UTF-8", "-deprecation", "-unchecked")
+  "-encoding", "UTF-8", "-deprecation", "-unchecked",
+  "-Xfatal-warnings")
 // TODO consider -Xlint
-// *or* -Ywarn-nullary-override -Ywarn-inaccessible -Ywarn-adapted-args
+// *or* -Ywarn-nullary-override -Ywarn-inaccessible
+// -Yno-imports -Yno-predef are also interesting
 
 scalacOptions ++= {
-  if (scalaVersion.value startsWith "2.9") Seq.empty[String]
-  else Seq("-feature", "-language")
+  if (scalaVersion.value startsWith "2.9") Seq("-Ydependent-method-types")
+  else Seq("-Yno-adapted-args", "-feature", "-language",
+           "-language:implicitConversions", "-language:higherKinds",
+           "-language:existentials", "-language:postfixOps")
 }
 
-// Major, minor, and milestone.
-def scalaVersionInfo(v: String): (Int, Int, Int, Option[Int]) =
-  ("""^(\d+)\.(\d+)\.(\d+)(?:-M(\d+))?""".r findFirstMatchIn v
-     map {case util.matching.Regex.Groups(maj, min, pat, mil) =>
-       (maj.toInt, min.toInt, pat.toInt,
-        Option(mil) map (_.toInt))}
-     getOrElse (0, 0, 0, None))
-
 scalacOptions ++= {
-  import scala.math.Ordering.Implicits.infixOrderingOps
-  val strictInf = scalaVersionInfo(scalaVersion.value) match {
-    case (2, 11, 0, Some(mil)) => mil > 5
-    case (maj, min, _, _) => (maj -> min) > (2 -> 10)
-  }
-  if (strictInf) Seq("-Xstrict-inference")
+  if (scalaVersion.value startsWith "2.10") Seq("-Xdivergence211")
   else Seq.empty[String]
 }
 
 javacOptions in (Compile, compile) ++=
-  Seq("-encoding", "UTF-8", "-Xlint")
+  Seq("-encoding", "UTF-8", "-Xlint", "-Werror")
 
 scalazVersion := "7.0.5"
 
