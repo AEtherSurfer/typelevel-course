@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import org.scalastyle.sbt.{PluginKeys => SS}
+
 name := "TODO-name"
 
 version := "0.1.0-SNAPSHOT"
@@ -55,6 +57,10 @@ libraryDependencies ++= Seq(
     "org.scalaz" %% "scalaz-core" % scalazVersion.value,
     "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion.value % "test"
 )
+
+org.scalastyle.sbt.ScalastylePlugin.Settings
+
+SS.failOnError := true
 
 resolvers += ("Sonatype Nexus Releases"
   at "https://oss.sonatype.org/content/repositories/releases")
