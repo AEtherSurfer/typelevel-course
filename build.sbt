@@ -44,7 +44,10 @@ scalacOptions ++= {
 }
 
 scalacOptions ++= {
-  if (scalaVersion.value startsWith "2.10") Seq("-Xdivergence211")
+  val sv = scalaVersion.value
+  if (sv startsWith "2.10") Seq("-Xdivergence211")
+  else if (!(sv startsWith "2.9"))
+    Seq("-Ywarn-unused", "-Ywarn-unused-import", "-Ydelambdafy:method")
   else Seq.empty[String]
 }
 
