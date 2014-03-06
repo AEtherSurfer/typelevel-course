@@ -54,7 +54,7 @@ scalacOptions ++= {
 javacOptions in (Compile, compile) ++=
   Seq("-encoding", "UTF-8", "-Xlint", "-Werror")
 
-scalazVersion := "7.0.5"
+scalazVersion := "7.0.6"
 
 libraryDependencies ++= Seq(
     "org.scalaz" %% "scalaz-core" % scalazVersion.value,
