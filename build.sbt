@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import CrossVersion.partialVersion
 import org.scalastyle.sbt.{PluginKeys => SS}
 
 name := "TODO-name"
@@ -37,18 +38,23 @@ scalacOptions ++= Seq(
 // -Yno-imports -Yno-predef are also interesting
 
 scalacOptions ++= {
-  if (scalaVersion.value startsWith "2.9") Seq("-Ydependent-method-types")
-  else Seq("-Yno-adapted-args", "-feature", "-language",
-           "-language:implicitConversions", "-language:higherKinds",
-           "-language:existentials", "-language:postfixOps")
+  partialVersion(scalaVersion.value) match {
+    case Some((2, 9)) => Seq("-Ydependent-method-types")
+    case _ =>
+      Seq("-Yno-adapted-args", "-feature", "-language",
+          "-language:implicitConversions", "-language:higherKinds",
+          "-language:existentials", "-language:postfixOps")
+  }
 }
 
 scalacOptions ++= {
-  val sv = scalaVersion.value
-  if (sv startsWith "2.10") Seq("-Xdivergence211")
-  else if (!(sv startsWith "2.9"))
-    Seq("-Ywarn-unused", "-Ywarn-unused-import", "-Ydelambdafy:method")
-  else Seq.empty[String]
+  import scala.math.Ordering.Implicits.infixOrderingOps
+  partialVersion(scalaVersion.value) match {
+    case Some((2, 10)) => Seq("-Xdivergence211")
+    case Some(x) if x >= ((2, 11)) =>
+      Seq("-Ywarn-unused", "-Ywarn-unused-import", "-Ydelambdafy:method")
+    case _ => Seq.empty[String]
+  }
 }
 
 javacOptions in (Compile, compile) ++=
