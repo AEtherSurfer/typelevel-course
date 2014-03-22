@@ -81,7 +81,7 @@ publishMavenStyle := true
 
 publishTo := {
   val ossrh = "https://oss.sonatype.org/"
-  if (version.value.trim.endsWith("SNAPSHOT"))
+  if (isSnapshot.value)
     Some("snapshots" at ossrh + "content/repositories/snapshots")
   else
     Some("releases"  at ossrh + "service/local/staging/deploy/maven2")
