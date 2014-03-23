@@ -24,9 +24,14 @@ organization := "com.nocandysw"
 
 description := "TODO-describe"
 
+licenses := Seq("Apache License, Version 2.0"
+		-> url("http://www.apache.org/licenses/LICENSE-2.0"))
+
 homepage := Some(url("http://www.example.com")) // TODO
 
 scalaVersion := "2.10.3"
+
+crossScalaVersions := Seq("2.10.3", "2.11.0-RC3", "2.9.2", "2.9.3")
 
 val scalazVersion = settingKey[String]("Version of scalaz to use.")
 
@@ -73,9 +78,6 @@ SS.failOnError := true
 
 resolvers += ("Sonatype Nexus Releases"
   at "https://oss.sonatype.org/content/repositories/releases")
-
-licenses := Seq("Apache License, Version 2.0"
-		-> url("http://www.apache.org/licenses/LICENSE-2.0"))
 
 publishMavenStyle := true
 
