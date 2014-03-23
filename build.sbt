@@ -13,7 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import CrossVersion.partialVersion
 import org.scalastyle.sbt.{PluginKeys => SS}
 
 name := "TODO-name"
@@ -34,36 +33,6 @@ scalaVersion := "2.10.3"
 crossScalaVersions := Seq("2.10.3", "2.11.0-RC3", "2.9.2", "2.9.3")
 
 val scalazVersion = settingKey[String]("Version of scalaz to use.")
-
-scalacOptions ++= Seq(
-  "-encoding", "UTF-8", "-deprecation", "-unchecked",
-  "-Xfatal-warnings")
-// TODO consider -Xlint
-// *or* -Ywarn-nullary-override -Ywarn-inaccessible
-// -Yno-imports -Yno-predef are also interesting
-
-scalacOptions ++= {
-  partialVersion(scalaVersion.value) match {
-    case Some((2, 9)) => Seq("-Ydependent-method-types")
-    case _ =>
-      Seq("-Yno-adapted-args", "-feature", "-language",
-          "-language:implicitConversions", "-language:higherKinds",
-          "-language:existentials", "-language:postfixOps")
-  }
-}
-
-scalacOptions ++= {
-  import scala.math.Ordering.Implicits.infixOrderingOps
-  partialVersion(scalaVersion.value) match {
-    case Some((2, 10)) => Seq("-Xdivergence211")
-    case Some(x) if x >= ((2, 11)) =>
-      Seq("-Ywarn-unused", "-Ywarn-unused-import", "-Ydelambdafy:method")
-    case _ => Seq.empty[String]
-  }
-}
-
-javacOptions in (Compile, compile) ++=
-  Seq("-encoding", "UTF-8", "-Xlint", "-Werror")
 
 scalazVersion := "7.0.6"
 
