@@ -28,9 +28,9 @@ licenses := Seq("Apache License, Version 2.0"
 
 homepage := Some(url("http://www.example.com")) // TODO
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.10.4"
 
-crossScalaVersions := Seq("2.10.3", "2.11.0-RC3", "2.9.2", "2.9.3")
+crossScalaVersions := Seq("2.10.4", "2.11.0-RC3", "2.9.2", "2.9.3")
 
 val scalazVersion = settingKey[String]("Version of scalaz to use.")
 
