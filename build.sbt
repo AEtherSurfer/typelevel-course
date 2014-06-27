@@ -15,6 +15,13 @@
 
 import org.scalastyle.sbt.{PluginKeys => SS}
 
+lazy val root = (project in file(".")).
+  aggregate(exercises, answers)
+
+lazy val exercises = project
+
+lazy val answers = project
+
 name := "TODO-name"
 
 version in ThisBuild := "0.1.0-SNAPSHOT"
