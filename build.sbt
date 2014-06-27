@@ -44,10 +44,16 @@ val scalazVersion = settingKey[String]("Version of scalaz to use.")
 
 scalazVersion in ThisBuild := "7.0.6"
 
+val monocleVersion = "0.4.0"
+
 libraryDependencies in ThisBuild ++= Seq(
     "org.scalaz" %% "scalaz-core" % scalazVersion.value,
     "com.chuusai" %% "shapeless" % "2.0.0",
     "org.spire-math" %% "spire" % "0.7.5",
+    "com.github.julien-truffaut" %% "monocle-core" % monocleVersion,
+    "com.github.julien-truffaut" %% "monocle-generic" % monocleVersion,
+    "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion,
+    "com.github.julien-truffaut" %% "monocle-law" % monocleVersion % "test",
     "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion.value % "test"
 )
 
