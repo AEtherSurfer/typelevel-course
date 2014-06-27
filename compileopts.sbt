@@ -15,14 +15,14 @@
 
 import CrossVersion.partialVersion
 
-scalacOptions ++= Seq(
+scalacOptions in ThisBuild ++= Seq(
   "-encoding", "UTF-8", "-deprecation", "-unchecked",
   "-Xfatal-warnings")
 // TODO consider -Xlint
 // *or* -Ywarn-nullary-override -Ywarn-inaccessible
 // -Yno-imports -Yno-predef are also interesting
 
-scalacOptions ++= {
+scalacOptions in ThisBuild ++= {
   partialVersion(scalaVersion.value) match {
     case Some((2, 9)) => Seq("-Ydependent-method-types")
     case _ =>
@@ -32,7 +32,7 @@ scalacOptions ++= {
   }
 }
 
-scalacOptions ++= {
+scalacOptions in ThisBuild ++= {
   import scala.math.Ordering.Implicits.infixOrderingOps
   partialVersion(scalaVersion.value) match {
     case Some((2, 10)) => Seq("-Xdivergence211")
@@ -42,5 +42,5 @@ scalacOptions ++= {
   }
 }
 
-javacOptions in (Compile, compile) ++=
+javacOptions in (Compile, compile) in ThisBuild ++=
   Seq("-encoding", "UTF-8", "-Xlint", "-Werror")

@@ -17,40 +17,43 @@ import org.scalastyle.sbt.{PluginKeys => SS}
 
 name := "TODO-name"
 
-version := "0.1.0-SNAPSHOT"
+version in ThisBuild := "0.1.0-SNAPSHOT"
 
-organization := "com.nocandysw"
+organization in ThisBuild := "com.nocandysw"
 
 description := "TODO-describe"
 
-licenses := Seq("Apache License, Version 2.0"
-		-> url("http://www.apache.org/licenses/LICENSE-2.0"))
+licenses in ThisBuild :=
+  Seq("Apache License, Version 2.0"
+	-> url("http://www.apache.org/licenses/LICENSE-2.0"))
 
-homepage := Some(url("http://www.example.com")) // TODO
+homepage in ThisBuild := Some(url("http://www.example.com")) // TODO
 
-scalaVersion := "2.11.1"
+scalaVersion in ThisBuild := "2.11.1"
 
-crossScalaVersions := Seq("2.11.1", "2.10.4", "2.9.2", "2.9.3")
+crossScalaVersions in ThisBuild := Seq("2.11.1", "2.10.4")
 
 val scalazVersion = settingKey[String]("Version of scalaz to use.")
 
-scalazVersion := "7.0.6"
+scalazVersion in ThisBuild := "7.0.6"
 
-libraryDependencies ++= Seq(
+libraryDependencies in ThisBuild ++= Seq(
     "org.scalaz" %% "scalaz-core" % scalazVersion.value,
+    "com.chuusai" %% "shapeless" % "2.0.0",
+    "org.spire-math" %% "spire" % "0.7.5",
     "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion.value % "test"
 )
 
 org.scalastyle.sbt.ScalastylePlugin.Settings
 
-SS.failOnError := true
+SS.failOnError in ThisBuild := true
 
-resolvers += ("Sonatype Nexus Releases"
+resolvers in ThisBuild += ("Sonatype Nexus Releases"
   at "https://oss.sonatype.org/content/repositories/releases")
 
-publishMavenStyle := true
+publishMavenStyle in ThisBuild := true
 
-publishTo := {
+publishTo in ThisBuild := {
   val ossrh = "https://oss.sonatype.org/"
   if (isSnapshot.value)
     Some("snapshots" at ossrh + "content/repositories/snapshots")
@@ -58,12 +61,12 @@ publishTo := {
     Some("releases"  at ossrh + "service/local/staging/deploy/maven2")
 }
 
-publishArtifact in Test := false
+publishArtifact in Test in ThisBuild := false
 
-pomIncludeRepository := { _ => false }
+pomIncludeRepository in ThisBuild := { _ => false }
 
 // TODO fix URLs below
-pomExtra := (
+pomExtra in ThisBuild := (
   <parent>
     <groupId>org.sonatype.oss</groupId>
     <artifactId>oss-parent</artifactId>
