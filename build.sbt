@@ -51,12 +51,21 @@ libraryDependencies in ThisBuild ++= Seq(
     "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion.value % "test"
 )
 
+addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.5.2")
+
+addCompilerPlugin("org.brianmckenna" %% "wartremover" % "0.10")
+
+scalacOptions in ThisBuild += "-P:wartremover:only-warn-traverser:org.brianmckenna.wartremover.warts.Unsafe"
+
 org.scalastyle.sbt.ScalastylePlugin.Settings
 
 SS.failOnError in ThisBuild := true
 
-resolvers in ThisBuild += ("Sonatype Nexus Releases"
-  at "https://oss.sonatype.org/content/repositories/releases")
+resolvers in ThisBuild ++= Seq(
+  "Sonatype Nexus Releases"
+    at "https://oss.sonatype.org/content/repositories/releases",
+  "bintray/non" at "http://dl.bintray.com/non/maven"
+)
 
 publishMavenStyle in ThisBuild := true
 
