@@ -17,10 +17,7 @@ import CrossVersion.partialVersion
 
 scalacOptions in ThisBuild ++= Seq(
   "-encoding", "UTF-8", "-deprecation", "-unchecked",
-  "-Xfatal-warnings")
-// TODO consider -Xlint
-// *or* -Ywarn-nullary-override -Ywarn-inaccessible
-// -Yno-imports -Yno-predef are also interesting
+  "-Xlint")
 
 scalacOptions in ThisBuild ++= {
   partialVersion(scalaVersion.value) match {
