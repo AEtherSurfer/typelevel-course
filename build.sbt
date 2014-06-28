@@ -61,7 +61,8 @@ addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.5.2")
 
 addCompilerPlugin("org.brianmckenna" %% "wartremover" % "0.10")
 
-scalacOptions in ThisBuild += "-P:wartremover:only-warn-traverser:org.brianmckenna.wartremover.warts.Unsafe"
+// reenable?
+// scalacOptions in ThisBuild += "-P:wartremover:only-warn-traverser:org.brianmckenna.wartremover.warts.Unsafe"
 
 org.scalastyle.sbt.ScalastylePlugin.Settings
 
