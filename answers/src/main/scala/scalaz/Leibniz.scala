@@ -1,4 +1,4 @@
-package com.nocandysw.typelevelcourse.scalaz.answers
+package typelevelcourse.scalaz.answers
 
 import scalaz.Id.Id
 

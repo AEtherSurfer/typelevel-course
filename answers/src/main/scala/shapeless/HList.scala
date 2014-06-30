@@ -1,4 +1,4 @@
-package com.nocandysw.typelevelcourse.shapeless.answers
+package typelevelcourse.shapeless.answers
 
 import shapeless._, ops.hlist.Prepend
 

@@ -1,4 +1,4 @@
-package com.nocandysw.typelevelcourse.scalaz
+package typelevelcourse.scalaz
 
 import java.net.URI
 
