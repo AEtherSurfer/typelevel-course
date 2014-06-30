@@ -17,6 +17,17 @@ object IntOrString {
     }
 }
 
+// Write the traversal for this.
+final case class IntAndA[A](i: Int, a: A)
+
+object IntAndA {
+  implicit val intandaCovariant: Traverse[IntAndA] = new Traverse[IntAndA] {
+    def traverseImpl[G[_], A, B](fa: IntAndA[A])(f: A => G[B])
+                    (implicit G: Applicative[G]) =
+      G.map(f(fa.a))(IntAndA(fa.i, _))
+  }
+}
+
 final case class Doc[A](paras: IList[Para[A]])
 
 final case class Para[A](elts: IList[String \/ A])

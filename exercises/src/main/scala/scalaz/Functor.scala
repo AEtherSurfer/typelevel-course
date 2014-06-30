@@ -14,6 +14,13 @@ object IntOrString {
   // implicit val intOrStringCovariant: Functor[IntOrString] = ???
 }
 
+// Write the traversal for this.
+final case class IntAndA[A](i: Int, a: A)
+
+object IntAndA {
+  implicit val intandaCovariant: Traverse[IntAndA] = ???
+}
+
 // Add a type parameter to these to replace URI.
 final case class Doc(paras: IList[Para])
 
