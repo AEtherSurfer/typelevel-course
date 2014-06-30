@@ -1,6 +1,6 @@
 package com.nocandysw.typelevelcourse.scalaz.answers
 
-import scalaz.Functor
+import scalaz.{\/, Applicative, Functor, IList, Traverse}
 
 sealed abstract class IntOrString[A]
 final case class IOSInt[A](x: Int) extends IntOrString[A]
@@ -15,4 +15,32 @@ object IntOrString {
           case IOSString(x) => IOSString(x)
         }
     }
+}
+
+final case class Doc[A](paras: IList[Para[A]])
+
+final case class Para[A](elts: IList[String \/ A])
+
+object Doc {
+  implicit val docCovariant: Traverse[Doc] = new Traverse[Doc] {
+    override def map[A, B](fa: Doc[A])(f: A => B) =
+      Doc(fa.paras.map(para => Functor[Para].map(para)(f)))
+
+    def traverseImpl[G[_], A, B](fa: Doc[A])(f: A => G[B])
+                    (implicit G: Applicative[G]) =
+      G.map(Traverse[IList].traverse(fa.paras)(para =>
+              Traverse[Para].traverse(para)(f)))(Doc.apply)
+  }
+}
+
+object Para {
+  implicit val paraCovariant: Traverse[Para] = new Traverse[Para] {
+    override def map[A, B](fa: Para[A])(f: A => B) =
+      Para(fa.elts.map(elt => elt.map(f)))
+
+    def traverseImpl[G[_], A, B](fa: Para[A])(f: A => G[B])
+                    (implicit G: Applicative[G]) =
+      G.map(Traverse[IList].traverse(fa.elts)(elt =>
+        Traverse[String \/ ?].traverse(elt)(f)))(Para.apply)
+  }
 }
