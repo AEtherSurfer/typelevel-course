@@ -1,6 +1,8 @@
 package com.nocandysw.typelevelcourse.scalaz.answers
 
-import scalaz.{\/, Applicative, Functor, IList, Traverse}
+import java.net.URI
+
+import scalaz.{\/, Applicative, Foldable, Functor, IList, State, Traverse}
 
 sealed abstract class IntOrString[A]
 final case class IOSInt[A](x: Int) extends IntOrString[A]
@@ -54,4 +56,21 @@ object Para {
       G.map(Traverse[IList].traverse(fa.elts)(elt =>
         Traverse[String \/ ?].traverse(elt)(f)))(Para.apply)
   }
+
+  def urls[A](p: Para[A]): List[A] = Foldable[Para].toList(p)
+
+  def getURIContents(u: URI): String = ???
+
+  def extractAndFetch(p: Para[URI]): State[Map[URI, String], Para[String]] =
+    Traverse[Para].traverseU(p){uri =>
+      State{m: Map[URI, String] =>
+        m get uri map ((m, _)) getOrElse {
+          val uc = getURIContents(uri)
+          (m updated (uri, uc), uc)
+        }
+      }
+    }
+
+  // Then, update extractAndFetch to work with arbitrary Traverse[F],
+  // not just Para.
 }

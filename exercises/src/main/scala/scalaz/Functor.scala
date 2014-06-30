@@ -2,7 +2,7 @@ package com.nocandysw.typelevelcourse.scalaz
 
 import java.net.URI
 
-import scalaz.{\/, Applicative, Functor, IList, Traverse}
+import scalaz.{\/, Applicative, Foldable, Functor, IList, State, Traverse}
 
 // Add a phantom tparam to this class.
 sealed abstract class IntOrString
@@ -34,4 +34,16 @@ object Doc {
 object Para {
   // And this
   // implicit val paraCovariant: Functor[Para] = ???
+
+  // List the "URLs"
+  def urls[A](p: Para/*[A]*/): List[A] = ???
+
+  // How do I fetch a URI?  (Use a side-effect here.)
+  def getURIContents(u: URI): String = ???
+
+  // Fetch URI contents, but caching as you go.
+  def extractAndFetch(p: Para/*[URI]*/): State[Map[URI, String], Para/*[String]*/] = ???
+
+  // Then, update extractAndFetch to work with arbitrary Traverse[F],
+  // not just Para.
 }
