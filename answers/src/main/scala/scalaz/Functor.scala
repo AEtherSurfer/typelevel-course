@@ -59,17 +59,17 @@ object Para {
 
   def urls[A](p: Para[A]): List[A] = Foldable[Para].toList(p)
 
-  def getURIContents(u: URI): String = ???
+  def getURIContents(u: URI): String =
+    org.apache.commons.io.IOUtils toString u
+
+  def memo[A, B](f: A => B): A => State[Map[A, B], B] =
+    a => State{m => m get a map ((m, _)) getOrElse {
+                val b = f(a)
+                (m updated (a, b), b)
+              }}
 
   def extractAndFetch(p: Para[URI]): State[Map[URI, String], Para[String]] =
-    Traverse[Para].traverseU(p){uri =>
-      State{m: Map[URI, String] =>
-        m get uri map ((m, _)) getOrElse {
-          val uc = getURIContents(uri)
-          (m updated (uri, uc), uc)
-        }
-      }
-    }
+    Traverse[Para].traverseU(p)(memo(getURIContents))
 
   // Then, update extractAndFetch to work with arbitrary Traverse[F],
   // not just Para.

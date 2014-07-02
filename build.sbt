@@ -54,6 +54,7 @@ libraryDependencies in ThisBuild ++= Seq(
     "com.github.julien-truffaut" %% "monocle-generic" % monocleVersion,
     "com.github.julien-truffaut" %% "monocle-macro" % monocleVersion,
     "com.github.julien-truffaut" %% "monocle-law" % monocleVersion % "test",
+    "commons-io" % "commons-io" % "2.4",
     "org.scalaz" %% "scalaz-scalacheck-binding" % scalazVersion.value % "test"
 )
 

@@ -41,9 +41,13 @@ object Para {
   // How do I fetch a URI?  (Use a side-effect here.)
   def getURIContents(u: URI): String = ???
 
+  // Hint: extractAndFetch is trivial if you implement this first and
+  // use it there.
+  def memo[A, B](f: A => B): A => State[Map[A, B], B] = ???
+
   // Fetch URI contents, but caching as you go.
   def extractAndFetch(p: Para/*[URI]*/): State[Map[URI, String], Para/*[String]*/] = ???
 
-  // Then, update extractAndFetch to work with arbitrary Traverse[F],
-  // not just Para.
+  // Then, update extractAndFetch to work with Doc, not Para.  Then
+  // with arbitrary Traverse[F].
 }
