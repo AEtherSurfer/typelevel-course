@@ -1,4 +1,4 @@
-package typelevelcourse.scalaz.answers
+package typelevelcourse.scalaz
 
 import scalaz.Id.Id
 
@@ -12,18 +12,20 @@ sealed abstract class Leib[A, B] extends (A => B) {
   final def lift[F[_]]: F[A] Leib F[B] =
     subst[Lambda[X => F[A] Leib F[X]]](Leib.refl)
 
+  // Define symm and trans.
+
   /** Leib is symmetric. */
-  final def symm: B Leib A =
-    subst[? Leib A](Leib.refl)
+  final def symm: B Leib A = ???
 
   /** Leib is transitive. */
-  final def trans[C](bc: B Leib C): A Leib C =
-    bc.subst[A Leib ?](this)
+  final def trans[C](bc: B Leib C): A Leib C = ???
 }
 
 object Leib {
+  // Define this.
+
   /** Leib is reflexive. */
   implicit def refl[A]: A Leib A = new (A Leib A) {
-    override def subst[F[_]](fa: F[A]) = fa
+    override def subst[F[_]](fa: F[A]) = ???
   }
 }
