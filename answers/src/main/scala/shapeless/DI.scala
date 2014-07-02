@@ -23,7 +23,12 @@ trait Merge[L <: HList, S <: HList] extends DepFn2[L, S] {
 
 object Merge extends MergeInstances {
   // The vacuous, base case.
-  implicit val empty: Aux[HNil, HNil, HNil] = rid
+  implicit def likewise[L <: HList]: Aux[L, L, L] = new Merge[L, L] {
+    type Out = L
+    def extractLeft(o: Out): L = o
+    def extractRight(o: Out): L = o
+    def apply(l: L, s: L): L = l
+  }
 }
 
 sealed abstract class MergeInstances extends MergeInstances0 {
