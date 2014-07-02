@@ -15,7 +15,7 @@ final case class ==>[L <: HList, A](run: L => A) {
   def map[B](f: A => B): L ==> B = ==>(f compose run)
 }
 
-trait Merge[L <: HList, S <: HList] extends DepFn2[L, S] {
+trait Merge[L <: HList, S <: HList] {
   type Out <: HList
   def extractLeft(o: Out): L
   def extractRight(o: Out): S
@@ -27,7 +27,6 @@ object Merge extends MergeInstances {
     type Out = L
     def extractLeft(o: Out): L = o
     def extractRight(o: Out): L = o
-    def apply(l: L, s: L): L = l
   }
 }
 
@@ -37,7 +36,6 @@ sealed abstract class MergeInstances extends MergeInstances0 {
     type Out = L
     def extractLeft(o: Out): L = o
     def extractRight(o: Out): HNil = HNil
-    def apply(l: L, s: HNil): Out = l
   }
 
   // Nonvacuous base case 2: left is empty.
@@ -45,7 +43,6 @@ sealed abstract class MergeInstances extends MergeInstances0 {
     type Out = S
     def extractLeft(o: Out): HNil = HNil
     def extractRight(o: Out): S = o
-    def apply(l: HNil, s: S): Out = s
   }
 }
 
@@ -59,7 +56,6 @@ sealed abstract class MergeInstances0 extends MergeInstances1 {
     def extractLeft(o: Out): L = rec extractLeft o
     def extractRight(o: Out): H :: T = 
       sel(extractLeft(o)) :: (rec extractRight o)
-    def apply(l: L, s: H :: T): Out = rec(l, s.tail)
   }
 }
 
@@ -76,7 +72,6 @@ sealed abstract class MergeInstances1 {
     def extractLeft(o: Out): L = rec extractLeft o.tail
     def extractRight(o: Out): H :: T = 
       o.head :: (rec extractRight o.tail)
-    def apply(l: L, s: H :: T): Out = s.head :: rec(l, s.tail)
   }
 }
 
