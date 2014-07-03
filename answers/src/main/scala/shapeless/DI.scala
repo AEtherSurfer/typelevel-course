@@ -63,8 +63,8 @@ sealed abstract class MergeInstances1 {
   type Aux[L <: HList, S <: HList, Out0 <: HList] =
     Merge[L, S] { type Out = Out0 }
 
-  // The case where H is *not* a member of the left and right.  Cons
-  // it on the left and recur.
+  // The case where H is *not* a member of the left.  Cons it on the
+  // result and recur.
   implicit def succ[L <: HList, H, T <: HList]
     (implicit rec: Merge[L, T])
       : Aux[L, H :: T, H :: rec.Out] = new Merge[L, H :: T] {

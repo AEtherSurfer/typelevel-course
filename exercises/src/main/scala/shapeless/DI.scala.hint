@@ -1,0 +1,45 @@
+// -*- scala -*-
+// Here's the evidence you need to implement ==>#flatMap.
+trait Merge[L <: HList, S <: HList] {
+  type Out <: HList
+  def extractLeft(o: Out): L
+  def extractRight(o: Out): S
+}
+
+// We proceed in order with a chain of `extends`.  Implicits in more
+// specific subclasses have higher priority, so we have an order of
+// type-level pattern matching.
+
+object Merge extends MergeInstances {
+  // The vacuous, base case.
+  implicit def likewise[L <: HList]: Aux[L, L, L] = new Merge[L, L] {
+    type Out = L
+    // Implement these.
+    def extractLeft(o: Out): L = ???
+    def extractRight(o: Out): L = ???
+  }
+}
+
+sealed abstract class MergeInstances extends MergeInstances0 {
+  // Nonvacuous base case 1: right is empty.  Implement this.
+  implicit def lid[L <: HList]: Aux[L, HNil, L] = ???
+
+  // Nonvacuous base case 2: left is empty.  Implement this.
+  implicit def rid[S <: HList]: Aux[HNil, S, S] = ???
+}
+
+sealed abstract class MergeInstances0 extends MergeInstances1 {
+  // The case where H is a member of the left and right.  Drop it from
+  // the right and recur.  Implement this.
+  implicit def dropLeft[L <: HList, H, T <: HList]
+    (implicit sel: Selector.Aux[L, H], rec: Merge[L, T])
+      : Aux[L, H :: T, rec.Out] = ???
+}
+
+sealed abstract class MergeInstances1 {
+  type Aux[L <: HList, S <: HList, Out0 <: HList] =
+    Merge[L, S] { type Out = Out0 }
+
+  // You also need a case where H is *not* a member of the left side.
+  // It has type Aux[L, H :: T, H :: rec.Out] for some rec.
+}
