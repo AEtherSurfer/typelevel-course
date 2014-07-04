@@ -5,9 +5,9 @@ import java.net.URI
 import scalaz.{\/, Applicative, Foldable, Functor, IList, State, Traverse}
 
 // Add a phantom tparam to this class.
-sealed abstract class IntOrString
-final case class IOSInt(x: Int) extends IntOrString
-final case class IOSString(x: String) extends IntOrString
+sealed abstract class IntOrString[A]
+final case class IOSInt[A](x: Int) extends IntOrString[A]
+final case class IOSString[A](x: String) extends IntOrString[A]
 
 object IntOrString {
   // Then uncomment and implement this, following the types and laws.
@@ -19,6 +19,9 @@ final case class IntAndA[A](i: Int, a: A)
 
 object IntAndA {
   implicit val intandaCovariant: Functor[IntAndA] = ???
+
+object NonScalaZTraversal {
+    List(1,2,3,4).foldLeft((0,List[String]())) { case ((z:Int,a:List[String]),e: Int) => (z+e, a :+ e.toString) }
 }
 
 // Add a type parameter to these to replace URI.
